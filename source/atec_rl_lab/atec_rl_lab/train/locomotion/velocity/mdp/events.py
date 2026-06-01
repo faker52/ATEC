@@ -241,8 +241,8 @@ def randomize_arm_joint_targets(
     current_targets = asset.data.joint_pos_target.clone()
     new_targets = current_targets[env_ids][:, joint_ids] + noise
 
-    lower = asset.data.joint_pos_limits[0, joint_ids]
-    upper = asset.data.joint_pos_limits[1, joint_ids]
+    lower = asset.data.joint_pos_limits[env_ids][:, joint_ids, 0]
+    upper = asset.data.joint_pos_limits[env_ids][:, joint_ids, 1]
     new_targets = torch.clamp(new_targets, lower, upper)
 
     asset.set_joint_position_target(new_targets, joint_ids=joint_ids, env_ids=env_ids)

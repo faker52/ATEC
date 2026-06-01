@@ -50,6 +50,58 @@ This checkpoint path can be modified in `demo/solution.py`.
 
 ![baseline demo](./doc/baseline.gif)
 
+### 2.4 B2+Piper (Quadruped with Arm) Locomotion
+
+Train a velocity-command-following policy for B2 with a Piper arm mounted.
+The arm joints are perturbed during training to make the locomotion policy robust.
+
+**Flat terrain (plane):**
+
+```bash
+# GPU training (recommended, ~15-20 min on V100S):
+python scripts/rsl_rl/train.py \
+  --task ATEC-Isaac-Velocity-Flat-Unitree-B2-Piper-v0 \
+  --num_envs 4096 \
+  --max_iterations 10000 \
+  --headless
+
+# CPU training (fallback, ~17 hours):
+CUDA_VISIBLE_DEVICES="" python scripts/rsl_rl/train.py \
+  --task ATEC-Isaac-Velocity-Flat-Unitree-B2-Piper-v0 \
+  --num_envs 512 \
+  --max_iterations 10000 \
+  --headless \
+  --device cpu
+```
+
+**Rough terrain:**
+
+```bash
+python scripts/rsl_rl/train.py \
+  --task ATEC-Isaac-Velocity-Rough-Unitree-B2-Piper-v0 \
+  --num_envs 4096 \
+  --max_iterations 20000 \
+  --headless
+```
+
+**With video recording:**
+
+```bash
+python scripts/rsl_rl/train.py \
+  --task ATEC-Isaac-Velocity-Flat-Unitree-B2-Piper-v0 \
+  --num_envs 4096 \
+  --max_iterations 10000 \
+  --headless \
+  --video --video_length 200 --video_interval 2000
+```
+
+Videos are saved under `logs/rsl_rl/unitree_b2_piper_flat/<timestamp>/videos/train/`.
+
+| Task ID | Robot | Terrain | PPO Iterations |
+|---------|-------|---------|---------------|
+| `ATEC-Isaac-Velocity-Flat-Unitree-B2-Piper-v0` | B2+Piper | Flat | 5000 (default) |
+| `ATEC-Isaac-Velocity-Rough-Unitree-B2-Piper-v0` | B2+Piper | Rough | 20000 (default) |
+
 ## 3. IL for Manipoulation
 
 This section follows the core idea of ACT (Action Chunking with Transformers).
